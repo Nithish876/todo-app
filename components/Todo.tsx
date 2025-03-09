@@ -12,12 +12,12 @@ import { motion, AnimatePresence, Reorder } from "framer-motion";
 import { Sun, Moon } from "lucide-react";
 import { useTheme } from "next-themes";
 
-interface Todo {
-  id: number;
-  text: string;
-  completed: boolean;
-  dueDate: Date | null;
-}
+type Todo = {
+    id: number;
+    text: string;
+    completed: boolean;
+    dueDate?: Date;  // Allow undefined
+  };
 
 type Filter = "all" | "active" | "completed";
 
@@ -25,7 +25,7 @@ export default function TodoApp() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [task, setTask] = useState("");
   const [filter, setFilter] = useState<Filter>("all");
-  const [dueDate, setDueDate] = useState<Date | null>(null);
+  const [dueDate, setDueDate] = useState<Date | undefined>(undefined);
   const { theme, setTheme } = useTheme();
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function TodoApp() {
     if (task.trim() === "") return;
     setTodos([...todos, { id: Date.now(), text: task, completed: false, dueDate }]);
     setTask("");
-    setDueDate(null);
+    setDueDate(undefined);
   };
 
   const toggleTodo = (id: number) => {
